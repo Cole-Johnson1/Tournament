@@ -1,0 +1,3 @@
+package tournament.domain.state;
+import tournament.domain.Tournament;
+public abstract class AbstractTournamentState implements TournamentState { protected void invalid(String a){ throw new IllegalStateException("InvalidTournamentState: "+a);} public void openRegistration(Tournament t){invalid("openRegistration");} public void closeRegistrationAndSeed(Tournament t){invalid("closeRegistrationAndSeed");} public void generateSchedule(Tournament t){invalid("generateSchedule");} public void startTournament(Tournament t){invalid("startTournament");} public void finalizeTournament(Tournament t){invalid("finalizeTournament");} }
