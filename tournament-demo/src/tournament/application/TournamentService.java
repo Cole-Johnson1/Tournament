@@ -1,5 +1,8 @@
 package tournament.application;
-import tournament.domain.*; import tournament.domain.factory.TournamentFactory; import tournament.infrastructure.auth.AuthAdapter; import tournament.infrastructure.repository.TournamentRepository;
+import tournament.application.repository.TournamentRepository;
+ import tournament.domain.*;
+ import tournament.domain.factory.TournamentFactory;
+ import tournament.infrastructure.auth.AuthAdapter;
 public class TournamentService {
  private final TournamentRepository repo; private final TournamentFactory factory; private final AuthAdapter auth; private final AuditService audit;
  public TournamentService(TournamentRepository repo,TournamentFactory factory,AuthAdapter auth,AuditService audit){this.repo=repo;this.factory=factory;this.auth=auth;this.audit=audit;}
@@ -12,4 +15,8 @@ public class TournamentService {
  public void closeRegistrationAndSeed(String userId){ require(Role.ORGANIZER,userId); repo.getCurrentTournament().closeRegistrationAndSeed(); audit.record("CloseRegistrationAndSeed","Registration closed and teams seeded"); }
  public void generateSchedule(String userId){ require(Role.ORGANIZER,userId); repo.getCurrentTournament().generateSchedule(); audit.record("GenerateSchedule",repo.getCurrentTournament().getSchedulerStrategy().getName()); }
  public void startTournament(String userId){ require(Role.ORGANIZER,userId); repo.getCurrentTournament().startTournament(); audit.record("StartTournament","Tournament started"); }
+
+ public void finalizeTournament(String userId){ require(Role.ORGANIZER,userId); repo.getCurrentTournament().finalizeTournament(); audit.record("FinalizeTournament","Tournament completed"); }
+
+ public void cancelTournament(String userId){ require(Role.ORGANIZER,userId); repo.getCurrentTournament().cancel(); audit.record("CancelTournament","Tournament cancelled"); }
 }

@@ -1,12 +1,14 @@
 package tournament.domain;
 import java.util.*;
-import tournament.domain.policy.*; import tournament.domain.state.*; import tournament.domain.strategy.SchedulerStrategy;
+import tournament.domain.policy.*;
+ import tournament.domain.state.*;
+ import tournament.domain.strategy.SchedulerStrategy;
 public class Tournament {
  private final String name; private final TournamentType type; private final RuleSetPolicy ruleSetPolicy; private final RosterSizePolicy rosterSizePolicy; private final DisputeWindowPolicy disputeWindowPolicy; private final SchedulerStrategy schedulerStrategy;
  private TournamentState state=new DraftState();
  private final List<Team> teams=new ArrayList<>(); private final List<Match> matches=new ArrayList<>(); private final List<Dispute> disputes=new ArrayList<>();
  public Tournament(String name,TournamentType type,RuleSetPolicy ruleSetPolicy,RosterSizePolicy rosterSizePolicy,DisputeWindowPolicy disputeWindowPolicy,SchedulerStrategy schedulerStrategy){ this.name=name; this.type=type; this.ruleSetPolicy=ruleSetPolicy; this.rosterSizePolicy=rosterSizePolicy; this.disputeWindowPolicy=disputeWindowPolicy; this.schedulerStrategy=schedulerStrategy; }
- public void openRegistration(){ state.openRegistration(this);} public void closeRegistrationAndSeed(){ state.closeRegistrationAndSeed(this);} public void generateSchedule(){ if(teams.size()<2) throw new IllegalStateException("Minimum team count not met"); matches.clear(); matches.addAll(schedulerStrategy.generateSchedule(teams)); state.generateSchedule(this);} public void startTournament(){ state.startTournament(this); matches.forEach(Match::start);} public void finalizeTournament(){ state.finalizeTournament(this);}
+ public void openRegistration(){ state.openRegistration(this);} public void closeRegistrationAndSeed(){ state.closeRegistrationAndSeed(this);} public void generateSchedule(){ if(teams.size()<2) throw new IllegalStateException("Minimum team count not met"); matches.clear(); matches.addAll(schedulerStrategy.generateSchedule(teams)); state.generateSchedule(this);} public void startTournament(){ state.startTournament(this); matches.forEach(Match::start);} public void finalizeTournament(){ for(Match m:matches) if(m.getStatus()!=MatchStatus.FINALIZED) throw new IllegalStateException("All matches must be finalized before completing tournament"); state.finalizeTournament(this);} public void cancel(){ state.cancel(this);}
  public void registerTeam(Team team){ if(!state.getName().equals("RegistrationOpen")) throw new IllegalStateException("InvalidTournamentState"); if(findTeamByName(team.getName())!=null) throw new IllegalStateException("DuplicateTeamName"); teams.add(team);}
  public Team findTeamByName(String teamName){ return teams.stream().filter(t->t.getName().equalsIgnoreCase(teamName)).findFirst().orElse(null); }
  public Match findMatchById(int matchId){ return matches.stream().filter(m->m.getId()==matchId).findFirst().orElse(null); }
