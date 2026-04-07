@@ -21,32 +21,25 @@ mkdir -p bin
 javac -d bin $(find src -name "*.java")
 ```
 
-**Windows (PowerShell):**
-
 ```powershell
 cd tournament-demo
 mkdir bin -Force
 javac -d bin (Get-ChildItem -Recurse -Filter *.java src | ForEach-Object FullName)
 ```
-
-## Run
-
-### Scripted Demo (Phase 2 deliverable)
+## To Run
+### Demo
 
 ```bash
 java -cp bin tournament.presentation.Main --demo
 ```
-
 This runs the full scripted demonstration covering all Phase 2 requirements:
 architecture summary, pattern map, lifecycle walkthrough, state transitions,
 queries, policy comparison, save/reload, error handling, and performance benchmark.
 
 ### Interactive CLI
-
 ```bash
 java -cp bin tournament.presentation.Main
 ```
-
 Opens the menu-driven interface with sub-menus for Setup, Run, and Review.
 
 ## Project Structure
