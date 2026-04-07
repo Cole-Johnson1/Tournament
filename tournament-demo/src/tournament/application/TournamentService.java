@@ -19,4 +19,6 @@ public class TournamentService {
  public void finalizeTournament(String userId){ require(Role.ORGANIZER,userId); repo.getCurrentTournament().finalizeTournament(); audit.record("FinalizeTournament","Tournament completed"); }
 
  public void cancelTournament(String userId){ require(Role.ORGANIZER,userId); repo.getCurrentTournament().cancel(); audit.record("CancelTournament","Tournament cancelled"); }
+
+ public Tournament findByName(String name){ return repo.findByName(name); }
 }

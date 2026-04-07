@@ -80,6 +80,10 @@ public class TournamentFacade {
         return tournamentService.getCurrentTournament();
     }
 
+    public Tournament findTournamentByName(String name) {
+        return tournamentService.findByName(name);
+    }
+
     public List<AuditEvent> getAuditLog() {
         return auditService.getAuditLog();
     }
